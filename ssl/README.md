@@ -5,7 +5,7 @@ keytool -export -keystore keystore.pkcs12 -file server-side-cert.cer
 keytool -import -keystore truststore.pkcs12 -file .\server-side-cert.cer
 ```
 
-Create an SSLContect using the keystore and launch Undertow:
+Create an SSLContext using the keystore and launch Undertow:
 ```Java
 public void start() throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException, CertificateException, IOException, UnrecoverableKeyException {
     var keyStore = KeyStore.getInstance(new File("./keystore.pkcs12"), "secret".toCharArray());
@@ -84,7 +84,7 @@ PORT     STATE SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 206.40 seconds
 ```
 
-Create an SSLContect using the truststore and connect to Undertow using a HTTP client:
+Create an SSLContext using the truststore and connect to Undertow using a HTTP client:
 ```Java
 @Test
 public void get() throws Exception {
