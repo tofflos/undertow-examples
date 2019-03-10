@@ -1,8 +1,8 @@
 Create a key pair using keytool:
 ```Powershell
 keytool -genkeypair -keystore keystore.pkcs12 -keyalg RSA -dname "CN=localhost"
-keytool -export -keystore keystore.pkcs12 -file server-side-cert.cer
-keytool -import -keystore truststore.pkcs12 -file .\server-side-cert.cer
+keytool -exportcert -keystore keystore.pkcs12 -rfc -file server-side-cert.pem
+keytool -importcert -keystore truststore.pkcs12 -file server-side-cert.pem
 ```
 
 Create an SSLContext using the keystore and launch Undertow:
@@ -84,7 +84,18 @@ PORT     STATE SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 206.40 seconds
 ```
 
-Create an SSLContext using the truststore and connect to Undertow using a HTTP client:
+Test it in your terminal using HTTPie:
+```Bash
+http --verify=server-side-cert.pem https://localhost:8443
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 12
+Date: Sun, 10 Mar 2019 20:52:02 GMT
+
+Hello world!
+```
+
+Write an integration test based on AssertJ and the new HTTP client that comes bundled with JDK11:
 ```Java
 @Test
 public void get() throws Exception {
