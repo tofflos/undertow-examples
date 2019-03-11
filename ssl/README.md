@@ -1,8 +1,18 @@
-Create a key pair using keytool:
+1. Generate a keypair using keytool and store it in a keystore. The default keystore format was changed from JKS to PKCS12 in Java 9. See JEP 229 https://openjdk.java.net/jeps/229. The keystore will contain a private key and a public key. The public key is what we will use as the server certificate.
+2. Export the server certificate into a PEM format file for use with HTTPie.
+3. Import the server certificate into a truststore for use with HTTP clients written in Java. The truststore is just another keystore in PKCS12 format that contains the server certificate but not the server private key.
+
 ```Powershell
 keytool -genkeypair -keystore keystore.pkcs12 -keyalg RSA -dname "CN=localhost"
-keytool -exportcert -keystore keystore.pkcs12 -rfc -file server-side-cert.pem
-keytool -importcert -keystore truststore.pkcs12 -file server-side-cert.pem
+keytool -exportcert -keystore keystore.pkcs12 -rfc -file certificate.pem
+keytool -importcert -keystore truststore.pkcs12 -file certificate.pem
+```
+
+If you prefer using OpenSSL you can try the following steps below. I was able to get the keystore and the certificate.pem working but not the truststore so my HTTP client written in Java fails with java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty. From what I can tell you need to add "Bag Attribute" 2.16.840.1.113894.746875.1.1 to the truststore and there doesn't seem to be a simple way of doing that with OpenSSL. See https://stackoverflow.com/questions/42766935/creating-p12-truststore-with-openssl. I tried this on early access build 19 for Java 12.
+```Bash
+openssl req -x509 -newkey rsa:2048 -subj '/CN=localhost' -keyout key.pem -out certificate.pem
+openssl pkcs12 -export -out keystore.pkcs12 -inkey key.pem -in certificate.pem
+openssl pkcs12 -export -out truststore.pkcs12 -nokeys -in certificate.pem
 ```
 
 Create an SSLContext using the keystore and launch Undertow:
@@ -86,7 +96,7 @@ Nmap done: 1 IP address (1 host up) scanned in 206.40 seconds
 
 Test it in your terminal using HTTPie:
 ```Bash
-http --verify=server-side-cert.pem https://localhost:8443
+http --verify=certificate.pem https://localhost:8443
 HTTP/1.1 200 OK
 Connection: keep-alive
 Content-Length: 12
