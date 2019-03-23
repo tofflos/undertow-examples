@@ -1,4 +1,4 @@
-## Getting started with Undertow
+## Getting started with Server Sent Events on Undertow
 
 Get started by adding the following Maven dependency:
 ```XML
@@ -63,7 +63,7 @@ data:8
 data:9
 ```
 
-Write an integration test based on AssertJ and a dedicated SSE client library such as the JAX-RS 2.1 SSE client. The built-in HTTP client that comes bundled with JDK11 provides BodyHandlers for types `Stream<String>` and `Publisher<List<ByteBuffer>>` but these require too much effort implementing parsing logic for my taste. I'm also using the Awaitility library to simplify the process of testing asynchronous methods. I would have preferred using some sort of deterministic programmatically controllable clock instead but couldn't find a library that I really liked. 
+Write an integration test based on AssertJ and a dedicated SSE client library such as the JAX-RS 2.1 SSE client. The built-in HTTP client that comes bundled with JDK11 provides BodyHandlers for types `Stream<String>` and `Publisher<List<ByteBuffer>>` but these require too much effort implementing parsing logic for my taste. I'm also using the Awaitility library to simplify the process of testing asynchronous methods but would have preferred using some sort of deterministic programmatically controllable clock. Unfortunately I couldn't find a library for this that I really liked. 
 ```Java
 @Test
 public void get() {

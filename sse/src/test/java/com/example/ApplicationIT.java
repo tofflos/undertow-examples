@@ -3,7 +3,6 @@ package com.example;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.sse.InboundSseEvent;
 import javax.ws.rs.sse.SseEventSource;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
