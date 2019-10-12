@@ -6,7 +6,7 @@ Get started by adding the following Maven dependency:
 <dependency>
     <groupId>io.undertow</groupId>
     <artifactId>undertow-core</artifactId>
-    <version>2.0.14.Final</version>
+    <version>2.0.26.Final</version>
 </dependency>
 ```
 
