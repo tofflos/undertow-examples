@@ -1,3 +1,5 @@
+## Setting up SSL on Undertow
+
 1. Generate a keypair using keytool and store it in a keystore. The default keystore format was changed from JKS to PKCS12 in Java 9. See JEP 229 https://openjdk.java.net/jeps/229. The keystore will contain a private key and a public key. The public key is what we will use as the server certificate.
 2. Export the server certificate into a PEM format file for use with HTTPie.
 3. Import the server certificate into a truststore for use with HTTP clients written in Java. The truststore is just another keystore in PKCS12 format that contains the server certificate but not the server private key.

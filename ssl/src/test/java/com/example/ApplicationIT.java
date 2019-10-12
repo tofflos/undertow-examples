@@ -10,21 +10,21 @@ import java.security.SecureRandom;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class ApplicationIT {
 
     private static Application application;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() throws Exception {
         application = new Application();
         application.start();
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() {
         if (application != null) {
             application.stop();
